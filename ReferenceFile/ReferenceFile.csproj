@@ -40,6 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\LocationReference.cs" />
+    <Compile Include="Entities\ReasonReference.cs" />
+    <Compile Include="Entities\TocReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reference.cs" />
   </ItemGroup>
