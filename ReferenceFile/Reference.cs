@@ -10,9 +10,11 @@ namespace ReferenceFile
   public class Reference
   {
     private List<LocationReference> _locations = null;
-    private List<TocReference> _trainOperators = null;
+    private List<TrainOperatorReference> _trainOperators = null;
     private List<ReasonReference> _lateRunningReasons = null;
     private List<ReasonReference> _cancelationReasons = null;
+    private List<ViaReference> _viaRecords = null;
+    private List<CisSourceReference> _cisSourceRecords = null;
 
     private bool _invalidFile;
     private bool _fileNotLoaded;
@@ -56,6 +58,8 @@ namespace ReferenceFile
       LoadTrainOperators(baseDocument);
       LoadLateRunningReasons(baseDocument);
       LoadCancelationReasons(baseDocument);
+      LoadViaRecords(baseDocument);
+      LoadCisSourceRecords(baseDocument);
 
     }
 
@@ -75,14 +79,14 @@ namespace ReferenceFile
 
     }
 
-    public List<TocReference> GetAllOperators()
+    public List<TrainOperatorReference> GetAllOperators()
     {
-      return _trainOperators ?? new List<TocReference>();
+      return _trainOperators ?? new List<TrainOperatorReference>();
     }
 
-    public List<TocReference> GetOperatorsFiltered(Func<TocReference, bool> lambda)
+    public List<TrainOperatorReference> GetOperatorsFiltered(Func<TrainOperatorReference, bool> lambda)
     {
-      List<TocReference> results = new List<TocReference>();
+      List<TrainOperatorReference> results = new List<TrainOperatorReference>();
 
       if (_trainOperators == null) return results;
 
@@ -123,6 +127,38 @@ namespace ReferenceFile
 
     }
 
+    public List<CisSourceReference> GetAllCisSourceReferences()
+    {
+      return _cisSourceRecords ?? new List<CisSourceReference>();
+    }
+
+    public List<CisSourceReference> GetCisSourceReferencesFiltered(Func<CisSourceReference, bool> lambda)
+    {
+      List<CisSourceReference> results = new List<CisSourceReference>();
+
+      if (_cisSourceRecords == null) return results;
+
+      results.AddRange(_cisSourceRecords.Where(lambda));
+      return results;
+
+    }
+
+    public List<ViaReference> GetAllViaRecords()
+    {
+      return _viaRecords ?? new List<ViaReference>();
+    }
+
+    public List<ViaReference> GetViaRecordsFiltered(Func<ViaReference, bool> lambda)
+    {
+      List<ViaReference> results = new List<ViaReference>();
+
+      if (_viaRecords == null) return results;
+
+      results.AddRange(_viaRecords.Where(lambda));
+      return results;
+
+    }
+
     private void LoadLocations(XDocument baseDocument)
     {
       if (baseDocument.Root == null) return;
@@ -133,10 +169,10 @@ namespace ReferenceFile
       {
         _locations.Add(new LocationReference()
         {
-          Tpl = locationRefElement.TryGetAttributeString("tpl"),
-          Crs = locationRefElement.TryGetAttributeString("crs"),
-          Toc = locationRefElement.TryGetAttributeString("toc"),
-          LocName = locationRefElement.TryGetAttributeString("locname")
+          TiplocCode = locationRefElement.TryGetAttributeString("tpl"),
+          CrsCode = locationRefElement.TryGetAttributeString("crs"),
+          TrainOperatorCode = locationRefElement.TryGetAttributeString("toc"),
+          LocationName = locationRefElement.TryGetAttributeString("locname")
 
         });
       }
@@ -147,14 +183,14 @@ namespace ReferenceFile
     {
       if (baseDocument.Root == null) return;
 
-      _trainOperators = new List<TocReference>();
+      _trainOperators = new List<TrainOperatorReference>();
       var locationRefElements = baseDocument.Root.Elements(_timetableRefNs + "TocRef");
       foreach (XElement locationRefElement in locationRefElements)
       {
-        _trainOperators.Add(new TocReference()
+        _trainOperators.Add(new TrainOperatorReference()
         {
-          Toc = locationRefElement.TryGetAttributeString("toc"),
-          TocName = locationRefElement.TryGetAttributeString("tocname"),
+          TrainOperatorCode = locationRefElement.TryGetAttributeString("toc"),
+          TrainOperatorName = locationRefElement.TryGetAttributeString("tocname"),
           Url = locationRefElement.TryGetAttributeString("url")
         });
       }
@@ -198,6 +234,43 @@ namespace ReferenceFile
         {
           Code = cancelReason.TryGetAttributeInteger("code"),
           ReasonText = cancelReason.TryGetAttributeString("reasontext")
+        });
+      }
+
+    }
+
+    private void LoadViaRecords(XDocument baseDocument)
+    {
+      if (baseDocument.Root == null) return;
+
+      _viaRecords = new List<ViaReference>();
+      var viaRefElements = baseDocument.Root.Elements(_timetableRefNs + "Via");
+      foreach (XElement viaRefElement in viaRefElements)
+      {
+        _viaRecords.Add(new ViaReference()
+        {
+          StationToDisplayAt = viaRefElement.TryGetAttributeString("at"),
+          DestinationStation = viaRefElement.TryGetAttributeString("dest"),
+          FirstValidCallLocation = viaRefElement.TryGetAttributeString("loc1"),
+          SecondValidCallLocation = viaRefElement.TryGetAttributeString("loc2"),
+          TextToBeDisplayed = viaRefElement.TryGetAttributeString("viatext")
+        });
+      }
+
+    }
+
+    private void LoadCisSourceRecords(XDocument baseDocument)
+    {
+      if (baseDocument.Root == null) return;
+
+      _cisSourceRecords = new List<CisSourceReference>();
+      var cisSourceElements = baseDocument.Root.Elements(_timetableRefNs + "CISSource");
+      foreach (XElement cisSourceElement in cisSourceElements)
+      {
+        _cisSourceRecords.Add(new CisSourceReference()
+        {
+          CisCode = cisSourceElement.TryGetAttributeString("code"),
+          CisName = cisSourceElement.TryGetAttributeString("name")
         });
       }
 
