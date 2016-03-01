@@ -11,7 +11,7 @@ namespace ExampleApplication
       //var myJourneys = myTimetable.GetAllJourneys();
       //var myJourney = myTimetable.GetJourneysFiltered(j => j.TrainUid == "C10572");
 
-      Reference myReference = new Reference(@"D:\Data\National Rail\Network Rail Data\20160228020751_ref_v3.xml\20160228020751_ref_v3.xml");
+      //Reference myReference = new Reference(@"D:\Data\National Rail\Network Rail Data\20160228020751_ref_v3.xml\20160228020751_ref_v3.xml");
 
       //var myLocationRefs = myReference.GetAllLocations();
       //var myLocation = myReference.GetLocationsFiltered(lr => lr.CrsCode.Equals("NCL"));
@@ -28,8 +28,8 @@ namespace ExampleApplication
       //var myViaRecords = myReference.GetAllViaRecords();
       //var myfilteredViaRecords = myReference.GetViaRecordsFiltered(v => v.DestinationStation.Equals("CAMBDGE"));
 
-      var myCisSourceReferences = myReference.GetAllCisSourceReferences();
-      var myCisSourceReferencesFiltered = myReference.GetCisSourceReferencesFiltered(c => c.CisCode.Equals("AM01"));
+      //var myCisSourceReferences = myReference.GetAllCisSourceReferences();
+      //var myCisSourceReferencesFiltered = myReference.GetCisSourceReferencesFiltered(c => c.CisCode.Equals("AM01"));
 
     }
 
