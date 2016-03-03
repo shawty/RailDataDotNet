@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A8A9418D-6711-46A9-BEEE-F7F8507A13A1}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{D6023E9E-A8EF-483F-93B9-B52FF23FAB00}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ExampleApplication</RootNamespace>
-    <AssemblyName>ExampleApplication</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <RootNamespace>AtocDecoder</RootNamespace>
+    <AssemblyName>AtocDecoder</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,25 +39,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Entities\TiplocInsertionRecord.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="ManualTrainsFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AtocDecoder\AtocDecoder.csproj">
-      <Project>{d6023e9e-a8ef-483f-93b9-b52ff23fab00}</Project>
-      <Name>AtocDecoder</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ReferenceFile\ReferenceFile.csproj">
-      <Project>{244f2606-20af-4e04-abbb-c0437ede8c20}</Project>
-      <Name>ReferenceFile</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TimetableFileDecoder\TimetableFile.csproj">
-      <Project>{cf7f53a7-9989-481e-9a3c-a0d442df1dbb}</Project>
-      <Name>TimetableFile</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
