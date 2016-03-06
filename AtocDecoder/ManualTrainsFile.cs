@@ -7,10 +7,14 @@ namespace AtocDecoder
   public class ManualTrainsFile
   {
     private List<TiplocInsertionRecord> _tiplocInsertRecords = new List<TiplocInsertionRecord>();
+    private List<TiplocAmendRecord> _tiplocAmendRecords = new List<TiplocAmendRecord>();
+    private List<TiplocDeleteRecord> _tiplocDeleteRecords = new List<TiplocDeleteRecord>();
 
     private TextReader _inputFile = null;
 
     public List<TiplocInsertionRecord> TiplocInsertionRecords { get { return _tiplocInsertRecords; } }
+    public List<TiplocDeleteRecord> TiplocDeleteRecords { get { return _tiplocDeleteRecords; } }
+    public List<TiplocAmendRecord> TiplocAmendRecords { get { return _tiplocAmendRecords; } }
 
     public ManualTrainsFile() { }
 
@@ -37,6 +41,15 @@ namespace AtocDecoder
           case "TI":
             DecodeTiplocInsertionRecord(line);
             break;
+
+          case "TA":
+            DecodeTiplocAmendRecord(line);
+            break;
+
+          case "TD":
+            DecodeTiplocDeleteRecord(line);
+            break;
+
         }
 
       }
@@ -45,27 +58,48 @@ namespace AtocDecoder
 
     private void DecodeTiplocInsertionRecord(string recordLine)
     {
-      string tiploc = recordLine.Substring(2, 7);
-      string capsId = recordLine.Substring(9, 2);
-      string nalco = recordLine.Substring(11, 6);
-      string nlcCheck = recordLine.Substring(17, 1);
-      string tpsDesc = recordLine.Substring(18, 26);
-      string stanox = recordLine.Substring(44, 5);
-      string poMcp = recordLine.Substring(49, 4);
-      string crs = recordLine.Substring(53, 3);
-      string capriDesc = recordLine.Substring(56, 16);
+      List<string> recordStrings = recordLine.ToClipList(new[] {2, 7, 2, 6, 1, 26, 5, 4, 3, 16, 8});
 
       _tiplocInsertRecords.Add(new TiplocInsertionRecord
       {
-        TiplocCode = tiploc.Trim(),
-        CapitalsIdentification = capsId.Trim().ToInt(),
-        NationalLocationCode = nalco.Trim().ToInt(),
-        NlcCheckCharacter = nlcCheck.Trim(),
-        TpsDescription = tpsDesc.Trim(),
-        TopsLocationCode = stanox.Trim().ToInt(),
-        PostOfficeLocationCode = poMcp.Trim().ToInt(),
-        CrsCode = crs.Trim(),
-        CapriDescription = capriDesc.Trim()
+        TiplocCode = recordStrings[1].Trim(),
+        CapitalsIdentification = recordStrings[2].Trim().ToInt(),
+        NationalLocationCode = recordStrings[3].Trim().ToInt(),
+        NlcCheckCharacter = recordStrings[4].Trim(),
+        TpsDescription = recordStrings[5].Trim(),
+        TopsLocationCode = recordStrings[6].Trim().ToInt(),
+        PostOfficeLocationCode = recordStrings[7].Trim().ToInt(),
+        CrsCode = recordStrings[8].Trim(),
+        CapriDescription = recordStrings[9].Trim()
+      });
+    }
+
+    private void DecodeTiplocAmendRecord(string recordLine)
+    {
+      List<string> recordStrings = recordLine.ToClipList(new[] {2, 7, 2, 6, 1, 26, 5, 4, 3, 16, 7, 1});
+
+      _tiplocAmendRecords.Add(new TiplocAmendRecord
+      {
+        TiplocCode = recordStrings[1].Trim(),
+        CapitalsIdentification = recordStrings[2].Trim().ToInt(),
+        NationalLocationCode = recordStrings[3].Trim().ToInt(),
+        NlcCheckCharacter = recordStrings[4].Trim(),
+        TpsDescription = recordStrings[5].Trim(),
+        TopsLocationCode = recordStrings[6].Trim().ToInt(),
+        PostOfficeLocationCode = recordStrings[7].Trim().ToInt(),
+        CrsCode = recordStrings[8].Trim(),
+        CapriDescription = recordStrings[9].Trim(),
+        NewTiplocCode = recordStrings[10].Trim()
+      });
+    }
+
+    private void DecodeTiplocDeleteRecord(string recordLine)
+    {
+      List<string> recordStrings = recordLine.ToClipList(new[] { 2, 7, 71 });
+
+      _tiplocDeleteRecords.Add(new TiplocDeleteRecord
+      {
+        TiplocCode = recordStrings[1].Trim()
       });
     }
 

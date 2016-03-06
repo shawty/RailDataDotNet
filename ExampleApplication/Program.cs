@@ -36,6 +36,8 @@ namespace ExampleApplication
       ManualTrainsFile myManualTrainsFile = new ManualTrainsFile();
       myManualTrainsFile.LoadEntireFile(@"D:\Data\National Rail\ttf102\ttisf102.mca");
       Console.WriteLine("TIP Loc inserts loaded : {0}", myManualTrainsFile.TiplocInsertionRecords.Count);
+      Console.WriteLine("TIP Loc amends loaded : {0}", myManualTrainsFile.TiplocAmendRecords.Count);
+      Console.WriteLine("TIP Loc deletes loaded : {0}", myManualTrainsFile.TiplocDeleteRecords.Count);
     }
 
   }

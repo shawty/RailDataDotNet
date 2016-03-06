@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\TiplocDeleteRecord.cs" />
+    <Compile Include="Entities\TiplocAmendRecord.cs" />
     <Compile Include="Entities\TiplocInsertionRecord.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="ManualTrainsFile.cs" />
